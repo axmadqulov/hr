@@ -1,0 +1,1761 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HR_NEXUS // DERSKIY HR OS 2.6</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Space Grotesk"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          colors: {
+            neo: {
+              lime: '#CCFF00',
+              yellow: '#FFE500',
+              pink: '#FF2E93',
+              cyan: '#00F0FF',
+              orange: '#FF6B00',
+              purple: '#A855F7',
+              bg: '#FFFDF5',
+              dark: '#121212',
+              card: '#FFFFFF'
+            }
+          },
+          boxShadow: {
+            'neo-sm': '3px 3px 0px #000000',
+            'neo': '5px 5px 0px #000000',
+            'neo-lg': '8px 8px 0px #000000',
+            'neo-xl': '12px 12px 0px #000000',
+            'neo-cyan': '6px 6px 0px #00F0FF',
+            'neo-pink': '6px 6px 0px #FF2E93',
+            'neo-lime': '6px 6px 0px #CCFF00'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+    input, textarea, select {
+      user-select: auto;
+    }
+    body {
+      background-color: #FFFDF5;
+      background-image: 
+        radial-gradient(#000000 1.2px, transparent 1.2px), 
+        linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px);
+      background-size: 24px 24px, 48px 48px, 48px 48px;
+    }
+    .neo-border {
+      border: 3.5px solid #000000;
+    }
+    .neo-border-2 {
+      border: 2px solid #000000;
+    }
+    .neo-shadow {
+      box-shadow: 5px 5px 0px #000000;
+    }
+    .neo-shadow-lg {
+      box-shadow: 8px 8px 0px #000000;
+    }
+    .neo-shadow-sm {
+      box-shadow: 3px 3px 0px #000000;
+    }
+    .neo-click {
+      transition: transform 0.08s cubic-bezier(0,0,0.2,1), box-shadow 0.08s cubic-bezier(0,0,0.2,1);
+    }
+    .neo-click:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0px #000000;
+    }
+    .neo-click:active {
+      transform: translate(3px, 3px);
+      box-shadow: 1px 1px 0px #000000;
+    }
+    .ticker-tape {
+      display: flex;
+      width: max-content;
+      animation: ticker 28s linear infinite;
+    }
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-wrapper:hover .ticker-tape {
+      animation-play-state: paused;
+    }
+    /* Custom scrollbars */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FFE500;
+      border: 2px solid #000;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #000;
+      border: 2px solid #FFE500;
+    }
+  </style>
+</head>
+<body class="font-sans text-black min-h-screen flex flex-col antialiased selection:bg-neo-pink selection:text-white">
+
+  <div class="marquee-wrapper overflow-hidden bg-neo-lime neo-border border-t-0 border-x-0 border-b-[3.5px] border-black py-1.5 font-mono font-black text-xs uppercase tracking-wider flex items-center">
+    <div class="ticker-tape flex items-center gap-8">
+      <span>🔥 HR_NEXUS // DERSKIY REJIM ISHGA TUSHIRILDI</span>
+      <span class="bg-black text-white px-2 py-0.5">KPI REKORD: IT 98.4%</span>
+      <span>⚡ REKRUTING VAKANSIYALAR: 7 TA OCHIQ O'RIN</span>
+      <span>💸 OYLIK PAYROLL HISOBI: 25-SANADA YOPILADI</span>
+      <span class="bg-neo-pink text-white px-2 py-0.5">YANGI XODIM: ONBOARDING JARAYONDA</span>
+      <span>🚀 SAMARKAND HUB // Q2 MAQSADLAR 115% BAJARILDI</span>
+      <!-- Repeated for infinite scroll -->
+      <span>🔥 HR_NEXUS // DERSKIY REJIM ISHGA TUSHIRILDI</span>
+      <span class="bg-black text-white px-2 py-0.5">KPI REKORD: IT 98.4%</span>
+      <span>⚡ REKRUTING VAKANSIYALAR: 7 TA OCHIQ O'RIN</span>
+      <span>💸 OYLIK PAYROLL HISOBI: 25-SANADA YOPILADI</span>
+      <span class="bg-neo-pink text-white px-2 py-0.5">YANGI XODIM: ONBOARDING JARAYONDA</span>
+      <span>🚀 SAMARKAND HUB // Q2 MAQSADLAR 115% BAJARILDI</span>
+    </div>
+  </div>
+
+  <header class="p-4 md:px-8 border-b-[3.5px] border-black bg-neo-yellow">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      
+      <!-- Brand & Status -->
+      <div class="flex items-center gap-3.5">
+        <div class="w-12 h-12 bg-black text-neo-lime font-black text-2xl flex items-center justify-center neo-shadow border-2 border-black rotate-[-2deg]">
+          ⚡
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-black text-2xl md:text-3xl tracking-tighter uppercase leading-none">
+              HR_NEXUS <span class="bg-black text-white px-2 py-0.5 text-xs tracking-normal font-mono align-middle">OS 2.6</span>
+            </h1>
+            <span class="hidden sm:inline-block bg-neo-cyan font-mono text-[11px] font-black uppercase px-2 py-0.5 neo-border-2">DERSKIY PRO</span>
+          </div>
+          <p class="font-mono text-xs font-bold text-neutral-800 tracking-tight mt-0.5">
+            AGRESSIV VA INTELLEKTUAL KADRLAR EKOTIZIMI
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Actions & Audio Toggle -->
+      <div class="flex flex-wrap items-center gap-3">
+        <button id="sound-btn" onclick="toggleAudio()" class="neo-click bg-white neo-border px-3 py-2 text-xs font-mono font-black uppercase flex items-center gap-1.5 neo-shadow-sm">
+          <span id="sound-icon">🔊</span>
+          <span id="sound-label">AUDIO: ON</span>
+        </button>
+
+        <button onclick="openModal('new-emp-modal')" class="neo-click bg-neo-pink text-white neo-border px-4 py-2 font-black uppercase text-xs sm:text-sm tracking-wide neo-shadow-sm flex items-center gap-1">
+          <span class="text-base">+</span> XODIM QO'SHISH
+        </button>
+
+        <!-- Current User Pill -->
+        <div class="bg-black text-neo-lime px-3 py-2 neo-border flex items-center gap-2 neo-shadow-sm">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-neo-lime animate-ping"></span>
+          <div class="text-left font-mono leading-none">
+            <p class="text-[10px] text-neutral-400 font-bold">HR DIREKTOR</p>
+            <p class="text-xs font-black text-white">S. ALIYEV</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <nav class="bg-white border-b-[3.5px] border-black px-4 md:px-8 py-2 sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+      <button onclick="switchTab('tab-dashboard')" id="nav-tab-dashboard" class="tab-btn active-tab px-4 py-2 text-xs md:text-sm font-black uppercase tracking-wider neo-border neo-shadow-sm bg-neo-lime text-black flex items-center gap-2 transition-all">
+        <span>📊</span> DASHBORD // BOSH NAZORAT
+      </button>
+      <button onclick="switchTab('tab-employees')" id="nav-tab-employees" class="tab-btn px-4 py-2 text-xs md:text-sm font-black uppercase tracking-wider neo-border neo-shadow-sm bg-white text-black hover:bg-neutral-100 flex items-center gap-2 transition-all">
+        <span>👥</span> XODIMLAR BAZASI (<span id="tab-emp-count">8</span>)
+      </button>
+      <button onclick="switchTab('tab-kanban')" id="nav-tab-kanban" class="tab-btn px-4 py-2 text-xs md:text-sm font-black uppercase tracking-wider neo-border neo-shadow-sm bg-white text-black hover:bg-neutral-100 flex items-center gap-2 transition-all">
+        <span>⚡</span> REKRUTING & KANBAN
+      </button>
+      <button onclick="switchTab('tab-attendance')" id="nav-tab-attendance" class="tab-btn px-4 py-2 text-xs md:text-sm font-black uppercase tracking-wider neo-border neo-shadow-sm bg-white text-black hover:bg-neutral-100 flex items-center gap-2 transition-all">
+        <span>⏱️</span> DAVOMAT & TA'TILLAR
+      </button>
+      <button onclick="switchTab('tab-payroll')" id="nav-tab-payroll" class="tab-btn px-4 py-2 text-xs md:text-sm font-black uppercase tracking-wider neo-border neo-shadow-sm bg-white text-black hover:bg-neutral-100 flex items-center gap-2 transition-all">
+        <span>💰</span> MAOSH & BONUS HISOBLAGICH
+      </button>
+    </div>
+  </nav>
+
+  <main class="flex-grow p-4 md:p-8 max-w-7xl mx-auto w-full">
+
+    <!-- ========================================== -->
+    <!-- MODULE 1: COMMAND CENTER (DASHBOARD) -->
+    <!-- ========================================== -->
+    <section id="tab-dashboard" class="tab-content block space-y-6">
+      
+      <!-- Live Metrics Bento Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        
+        <!-- Total Headcount -->
+        <div class="bg-neo-lime neo-border neo-shadow p-5 relative overflow-hidden group">
+          <div class="absolute -right-4 -bottom-4 text-7xl font-black opacity-15 select-none font-mono">HR</div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-mono text-xs font-black uppercase tracking-widest bg-black text-white px-2 py-0.5">SHTAT HOLATI</span>
+            <span class="text-xl">🔥</span>
+          </div>
+          <div class="text-4xl lg:text-5xl font-black font-mono tracking-tighter" id="metric-headcount">8</div>
+          <p class="font-bold text-xs uppercase mt-2">Jami Faol Xodimlar</p>
+          <div class="mt-3 flex items-center gap-2 font-mono text-[11px] font-bold">
+            <span class="bg-white px-1.5 py-0.5 neo-border-2 border-black">+2 ta shu oy</span>
+            <span>100% to'la shtat</span>
+          </div>
+        </div>
+
+        <!-- Monthly Payroll Burn Rate -->
+        <div class="bg-neo-cyan neo-border neo-shadow p-5 relative overflow-hidden">
+          <div class="absolute -right-4 -bottom-4 text-7xl font-black opacity-15 select-none font-mono">$</div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-mono text-xs font-black uppercase tracking-widest bg-black text-white px-2 py-0.5">OYLIK FOND</span>
+            <span class="text-xl">💸</span>
+          </div>
+          <div class="text-4xl lg:text-5xl font-black font-mono tracking-tighter" id="metric-payroll">$16,700</div>
+          <p class="font-bold text-xs uppercase mt-2">Umumiy Maosh Va Bonusi</p>
+          <div class="mt-3 flex items-center gap-2 font-mono text-[11px] font-bold">
+            <span class="bg-white px-1.5 py-0.5 neo-border-2 border-black">Budjet: $20k</span>
+            <span class="text-emerald-900">Normada (-16%)</span>
+          </div>
+        </div>
+
+        <!-- Org Performance / KPI Index -->
+        <div class="bg-neo-pink text-white neo-border neo-shadow p-5 relative overflow-hidden">
+          <div class="absolute -right-4 -bottom-4 text-7xl font-black opacity-20 select-none font-mono">%</div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-mono text-xs font-black uppercase tracking-widest bg-white text-black px-2 py-0.5">KOMPANIYA KPI</span>
+            <span class="text-xl">🎯</span>
+          </div>
+          <div class="text-4xl lg:text-5xl font-black font-mono tracking-tighter" id="metric-kpi">93.4%</div>
+          <p class="font-bold text-xs uppercase mt-2 text-white">O'rtacha Samaradorlik</p>
+          <div class="mt-3 flex items-center gap-2 font-mono text-[11px] font-bold text-black">
+            <span class="bg-neo-yellow px-1.5 py-0.5 neo-border-2 border-black">TOP: IT Bo'limi</span>
+            <span class="text-white">+4.2% o'sish</span>
+          </div>
+        </div>
+
+        <!-- Attendance & On-leave Status -->
+        <div class="bg-neo-orange neo-border neo-shadow p-5 relative overflow-hidden">
+          <div class="absolute -right-4 -bottom-4 text-7xl font-black opacity-15 select-none font-mono">VAC</div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-mono text-xs font-black uppercase tracking-widest bg-black text-white px-2 py-0.5">TA'TIL / MASOFAVIY</span>
+            <span class="text-xl">🌴</span>
+          </div>
+          <div class="text-4xl lg:text-5xl font-black font-mono tracking-tighter" id="metric-vacation">2 / 1</div>
+          <p class="font-bold text-xs uppercase mt-2">Ta'tilda / Masofada</p>
+          <div class="mt-3 flex items-center gap-2 font-mono text-[11px] font-bold">
+            <span class="bg-white px-1.5 py-0.5 neo-border-2 border-black">Davomat 96%</span>
+            <span>Intizom yuqori</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Live Operations & Quick Hub Split -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Live Action Pulse -->
+        <div class="lg:col-span-2 bg-white neo-border neo-shadow p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4 border-b-[3px] border-black pb-3">
+              <div class="flex items-center gap-2">
+                <span class="inline-block w-3.5 h-3.5 bg-red-600 rounded-full animate-ping"></span>
+                <h2 class="font-black text-lg md:text-xl uppercase tracking-tight">OPERATSION JONLI PULS & TOP PRIORITETLAR</h2>
+              </div>
+              <span class="bg-neo-yellow neo-border-2 px-2.5 py-0.5 font-mono text-xs font-black">2026 Q2 REAL-TIME</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Urgent Card 1 -->
+              <div class="bg-[#FFFDF5] neo-border-2 p-4 neo-shadow-sm flex flex-col justify-between">
+                <div>
+                  <div class="flex justify-between items-start">
+                    <span class="bg-red-500 text-white font-mono text-[10px] font-black px-2 py-0.5 uppercase">Shoshilinch</span>
+                    <span class="font-mono text-xs font-bold text-neutral-500">Bugun 17:00</span>
+                  </div>
+                  <h3 class="font-black text-base mt-2">Yangi Senior Golang Dev Tekshiruvi</h3>
+                  <p class="text-xs text-neutral-700 mt-1">Oferta qabul qilindi. HR onboarding hujjati va IT noutbuk konfiguratsiyasini tasdiqlang.</p>
+                </div>
+                <div class="mt-4 flex gap-2">
+                  <button onclick="quickActionToast('Oferta muvaffaqiyatli jo\'natildi!')" class="neo-click bg-neo-lime text-black font-black text-xs px-3 py-1.5 neo-border-2 neo-shadow-sm uppercase">Tasdiqlash</button>
+                  <button onclick="switchTab('tab-kanban')" class="neo-click bg-white text-black font-bold text-xs px-3 py-1.5 neo-border-2 uppercase">Kuzatish</button>
+                </div>
+              </div>
+
+              <!-- Urgent Card 2 -->
+              <div class="bg-[#FFFDF5] neo-border-2 p-4 neo-shadow-sm flex flex-col justify-between">
+                <div>
+                  <div class="flex justify-between items-start">
+                    <span class="bg-neo-purple text-white font-mono text-[10px] font-black px-2 py-0.5 uppercase">KPI Attestatsiya</span>
+                    <span class="font-mono text-xs font-bold text-neutral-500">2 kunda</span>
+                  </div>
+                  <h3 class="font-black text-base mt-2">Dizayn Jamoasi Kvartal Baholashi</h3>
+                  <p class="text-xs text-neutral-700 mt-1">3 nafar UI/UX mutaxassislari uchun 360-gradusli feedback yakunlandi.</p>
+                </div>
+                <div class="mt-4 flex gap-2">
+                  <button onclick="quickActionToast('KPI baholash varaqasi yuklandi!')" class="neo-click bg-neo-yellow text-black font-black text-xs px-3 py-1.5 neo-border-2 neo-shadow-sm uppercase">Hisobot</button>
+                  <button onclick="switchTab('tab-payroll')" class="neo-click bg-white text-black font-bold text-xs px-3 py-1.5 neo-border-2 uppercase">Bonus hisobi</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Department KPI Visual Bars -->
+            <div class="mt-6 border-t-[3px] border-black pt-4">
+              <h4 class="font-black text-sm uppercase mb-3 flex items-center justify-between">
+                <span>BO'LIMLAR BO'YICHA KPI REYTINGI</span>
+                <span class="font-mono text-xs text-neutral-600 font-bold">100% MAKSIMUM</span>
+              </h4>
+              <div class="space-y-3 font-mono text-xs font-black">
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span>ENGINEERING & IT</span>
+                    <span class="text-emerald-700">97.8%</span>
+                  </div>
+                  <div class="w-full bg-neutral-200 h-4 neo-border-2 relative">
+                    <div class="bg-neo-lime h-full border-r-2 border-black" style="width: 97.8%"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span>PRODUCT & UI/UX DIZAYN</span>
+                    <span class="text-emerald-700">94.1%</span>
+                  </div>
+                  <div class="w-full bg-neutral-200 h-4 neo-border-2 relative">
+                    <div class="bg-neo-cyan h-full border-r-2 border-black" style="width: 94.1%"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span>MARKETING & GROWTH</span>
+                    <span class="text-emerald-700">89.5%</span>
+                  </div>
+                  <div class="w-full bg-neutral-200 h-4 neo-border-2 relative">
+                    <div class="bg-neo-pink h-full border-r-2 border-black" style="width: 89.5%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-5 p-3 bg-neo-yellow neo-border-2 flex items-center justify-between font-mono text-xs font-black">
+            <span>⚡ AVTOMATIK SINXRONIZATSIYA: FAQAT DERSKIY REJIMDA</span>
+            <button onclick="triggerConfetti()" class="neo-click bg-black text-white px-3 py-1 uppercase text-[11px] neo-shadow-sm">Salomlashuv Otish 🎉</button>
+          </div>
+        </div>
+
+        <!-- Quick HR Shortcuts & Radar Widget -->
+        <div class="bg-neo-yellow neo-border neo-shadow p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between border-b-[3px] border-black pb-2 mb-4">
+              <h3 class="font-black text-lg uppercase tracking-tight">KADRLAR RADARI</h3>
+              <span class="font-mono text-xs font-black bg-white px-2 py-0.5 neo-border-2">LIVE</span>
+            </div>
+
+            <!-- Fun Neobrutalism Mini Card -->
+            <div class="bg-white neo-border-2 p-4 neo-shadow-sm mb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-neo-pink text-white font-black text-xl flex items-center justify-center neo-border-2">
+                  🏆
+                </div>
+                <div>
+                  <p class="font-mono text-[10px] uppercase font-bold text-neutral-600">OYNING ENG FAOL XODIMI</p>
+                  <p class="font-black text-base">Shaxzod Bekmirzayev</p>
+                  <p class="text-xs text-neutral-800 font-bold">Senior Backend // KPI: 99.1%</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Rapid Actions Checklist -->
+            <div class="space-y-2.5 font-sans">
+              <p class="font-mono text-xs font-black uppercase tracking-wider text-black">TEZKOR AMALLAR:</p>
+              
+              <button onclick="openModal('quick-announcement-modal')" class="w-full text-left p-2.5 bg-white neo-border-2 neo-shadow-sm font-black text-xs uppercase flex items-center justify-between hover:bg-neutral-50 neo-click">
+                <span>📢 Jamoaviy E'lon Berish</span>
+                <span class="font-mono font-black text-neo-pink">→</span>
+              </button>
+
+              <button onclick="switchTab('tab-attendance')" class="w-full text-left p-2.5 bg-white neo-border-2 neo-shadow-sm font-black text-xs uppercase flex items-center justify-between hover:bg-neutral-50 neo-click">
+                <span>⏱️ Davomat Shtampini Bosish</span>
+                <span class="font-mono font-black text-neo-pink">→</span>
+              </button>
+
+              <button onclick="exportQuickEmployeeList()" class="w-full text-left p-2.5 bg-white neo-border-2 neo-shadow-sm font-black text-xs uppercase flex items-center justify-between hover:bg-neutral-50 neo-click">
+                <span>📄 Barcha Xodimlarni CSV Eksport</span>
+                <span class="font-mono font-black text-neo-pink">→</span>
+              </button>
+
+              <button onclick="switchTab('tab-payroll')" class="w-full text-left p-2.5 bg-white neo-border-2 neo-shadow-sm font-black text-xs uppercase flex items-center justify-between hover:bg-neutral-50 neo-click">
+                <span>💳 Oylik Kvitansiyalarini Generatsiya</span>
+                <span class="font-mono font-black text-neo-pink">→</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t-2 border-black font-mono text-[11px] text-center font-bold">
+            HR_NEXUS OS // TO'LIQ SHIFRLANGAN VA INTIZOMLI
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- MODULE 2: EMPLOYEES DIRECTORY (XODIMLAR) -->
+    <!-- ========================================== -->
+    <section id="tab-employees" class="tab-content hidden space-y-6">
+      
+      <!-- Top Filters & Search Toolbar -->
+      <div class="bg-white neo-border neo-shadow p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+        
+        <!-- Search Input -->
+        <div class="w-full md:w-80 relative">
+          <input type="text" id="emp-search-input" onkeyup="handleSearchEmployees()" placeholder="Xodim ismi, lavozim, ko'nikma..." class="w-full neo-border-2 bg-neo-bg px-4 py-2.5 font-bold text-sm outline-none focus:bg-white placeholder:text-neutral-500 font-mono shadow-[2px_2px_0px_#000]">
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+          <span class="font-mono text-xs font-black uppercase mr-1">Bo'lim:</span>
+          <button onclick="filterDept('ALL')" class="dept-btn active-dept px-3 py-1.5 text-xs font-black uppercase neo-border-2 bg-black text-white neo-shadow-sm neo-click">Barchasi</button>
+          <button onclick="filterDept('IT')" class="dept-btn px-3 py-1.5 text-xs font-black uppercase neo-border-2 bg-white text-black neo-shadow-sm neo-click">IT & Dev</button>
+          <button onclick="filterDept('Dizayn')" class="dept-btn px-3 py-1.5 text-xs font-black uppercase neo-border-2 bg-white text-black neo-shadow-sm neo-click">Dizayn</button>
+          <button onclick="filterDept('Marketing')" class="dept-btn px-3 py-1.5 text-xs font-black uppercase neo-border-2 bg-white text-black neo-shadow-sm neo-click">Marketing</button>
+          <button onclick="filterDept('Moliya')" class="dept-btn px-3 py-1.5 text-xs font-black uppercase neo-border-2 bg-white text-black neo-shadow-sm neo-click">Moliya & HR</button>
+        </div>
+
+        <!-- Add Button -->
+        <button onclick="openModal('new-emp-modal')" class="neo-click bg-neo-lime text-black font-black text-xs md:text-sm uppercase px-4 py-2.5 neo-border-2 neo-shadow-sm w-full md:w-auto flex items-center justify-center gap-1">
+          <span>+</span> Yangi Xodim Qo'shish
+        </button>
+      </div>
+
+      <!-- Employees Grid Cards / Table Toggle -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="employees-cards-container">
+        <!-- Rendered dynamically by JS -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="no-emp-state" class="hidden bg-neo-yellow neo-border neo-shadow p-12 text-center">
+        <h3 class="font-black text-2xl uppercase">Hech qanday xodim topilmadi!</h3>
+        <p class="font-mono font-bold text-sm mt-2">Qidiruv so'zini o'zgartiring yoki filtrlarni tozalang.</p>
+        <button onclick="resetEmployeeFilters()" class="neo-click mt-4 bg-black text-white font-black px-4 py-2 uppercase text-xs neo-shadow-sm">Filtrlarni Tiklash</button>
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- MODULE 3: RECRUITMENT KANBAN (REKRUTING) -->
+    <!-- ========================================== -->
+    <section id="tab-kanban" class="tab-content hidden space-y-6">
+      
+      <!-- Kanban Header -->
+      <div class="bg-neo-cyan neo-border neo-shadow p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="bg-black text-neo-cyan px-2 py-0.5 font-mono text-xs font-black uppercase">REKRUTING PIPELINE</span>
+            <span class="font-mono text-xs font-bold text-black">// 2026 KADRLAR OVRALOHI</span>
+          </div>
+          <h2 class="font-black text-xl md:text-2xl uppercase tracking-tight mt-1">NOMZODLARNI SARALASH & BOSHQARISH</h2>
+        </div>
+        <button onclick="openModal('new-candidate-modal')" class="neo-click bg-white text-black font-black uppercase text-xs sm:text-sm px-4 py-2.5 neo-border neo-shadow-sm">
+          + Yangi Nomzod Qo'shish
+        </button>
+      </div>
+
+      <!-- 4 Kanban Columns -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 items-start">
+        
+        <!-- Column 1: Ariza tushdi -->
+        <div class="bg-[#FFFDF5] neo-border neo-shadow p-4 flex flex-col min-h-[500px]">
+          <div class="flex items-center justify-between border-b-[3px] border-black pb-2.5 mb-3 bg-white -mx-4 -mt-4 p-3 border-t-0 border-x-0">
+            <span class="font-black text-sm uppercase tracking-tight">1. Ariza Kelib Tushdi</span>
+            <span id="col-count-applied" class="bg-neo-yellow neo-border-2 font-mono text-xs font-black px-2 py-0.5">2</span>
+          </div>
+          <div class="space-y-3 flex-grow" id="kanban-applied">
+            <!-- Cards rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Column 2: Texnik Suhbat -->
+        <div class="bg-[#FFFDF5] neo-border neo-shadow p-4 flex flex-col min-h-[500px]">
+          <div class="flex items-center justify-between border-b-[3px] border-black pb-2.5 mb-3 bg-white -mx-4 -mt-4 p-3 border-t-0 border-x-0">
+            <span class="font-black text-sm uppercase tracking-tight">2. Texnik Suhbat</span>
+            <span id="col-count-interview" class="bg-neo-cyan neo-border-2 font-mono text-xs font-black px-2 py-0.5">2</span>
+          </div>
+          <div class="space-y-3 flex-grow" id="kanban-interview">
+            <!-- Cards rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Column 3: Oferta Berildi -->
+        <div class="bg-[#FFFDF5] neo-border neo-shadow p-4 flex flex-col min-h-[500px]">
+          <div class="flex items-center justify-between border-b-[3px] border-black pb-2.5 mb-3 bg-white -mx-4 -mt-4 p-3 border-t-0 border-x-0">
+            <span class="font-black text-sm uppercase tracking-tight">3. Oferta Bosqichida</span>
+            <span id="col-count-offer" class="bg-neo-purple text-white neo-border-2 font-mono text-xs font-black px-2 py-0.5">1</span>
+          </div>
+          <div class="space-y-3 flex-grow" id="kanban-offer">
+            <!-- Cards rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Column 4: Ishga Qabul Qilindi -->
+        <div class="bg-[#FFFDF5] neo-border neo-shadow p-4 flex flex-col min-h-[500px]">
+          <div class="flex items-center justify-between border-b-[3px] border-black pb-2.5 mb-3 bg-white -mx-4 -mt-4 p-3 border-t-0 border-x-0">
+            <span class="font-black text-sm uppercase tracking-tight">4. Ishga Qabul Qilindi</span>
+            <span id="col-count-hired" class="bg-neo-lime neo-border-2 font-mono text-xs font-black px-2 py-0.5">1</span>
+          </div>
+          <div class="space-y-3 flex-grow" id="kanban-hired">
+            <!-- Cards rendered by JS -->
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- MODULE 4: ATTENDANCE & LEAVES (DAVOMAT) -->
+    <!-- ========================================== -->
+    <section id="tab-attendance" class="tab-content hidden space-y-6">
+      
+      <!-- Punch-in Simulator Hero Banner -->
+      <div class="bg-neo-pink text-white neo-border neo-shadow p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div>
+          <span class="bg-white text-black font-mono font-black text-xs px-2.5 py-1 neo-border-2 uppercase">JONLI VAQT VA SHTAMP</span>
+          <h2 class="font-black text-2xl md:text-3xl uppercase tracking-tight mt-2 text-white">XODIM VIRTUAL TERMINALI (PUNCH-CLOCK)</h2>
+          <p class="font-mono text-xs font-bold text-neutral-100 mt-1">Samarqand vaqti bilan real vaqt monitoringi va GPS chek-in integratsiyasi.</p>
+        </div>
+
+        <!-- Live Clock & Button -->
+        <div class="flex flex-col sm:flex-row items-center gap-4 bg-black p-4 neo-border-2 text-white">
+          <div class="text-center sm:text-right font-mono">
+            <div id="live-time-display" class="font-black text-2xl text-neo-lime">13:46:44</div>
+            <div class="text-[10px] text-neutral-400 font-bold uppercase" id="live-date-display">DUSHANBA, 5-OKTYABR 2026</div>
+          </div>
+          <button id="punch-btn" onclick="togglePunchClock()" class="neo-click bg-neo-lime text-black font-black uppercase text-sm px-5 py-3 neo-border-2 neo-shadow-sm">
+            KIRISHNI BOSISH 🟢
+          </button>
+        </div>
+      </div>
+
+      <!-- Leaves Split Section -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Leave Balance Cards -->
+        <div class="bg-white neo-border neo-shadow p-6 space-y-5">
+          <h3 class="font-black text-lg uppercase tracking-tight border-b-[3px] border-black pb-2">TA'TIL BALANSI KVOTALARI</h3>
+          
+          <div class="bg-neo-bg neo-border-2 p-3 neo-shadow-sm flex items-center justify-between">
+            <div>
+              <p class="font-mono text-xs font-bold text-neutral-600">YILLIK ASOSIY TA'TIL</p>
+              <h4 class="font-black text-xl">18 / 24 kun</h4>
+            </div>
+            <span class="bg-neo-lime neo-border-2 font-mono font-black text-xs px-2 py-1">6 kun sarflandi</span>
+          </div>
+
+          <div class="bg-neo-bg neo-border-2 p-3 neo-shadow-sm flex items-center justify-between">
+            <div>
+              <p class="font-mono text-xs font-bold text-neutral-600">KASALLIK VARAQASI</p>
+              <h4 class="font-black text-xl">8 / 10 kun</h4>
+            </div>
+            <span class="bg-neo-cyan neo-border-2 font-mono font-black text-xs px-2 py-1">2 kun ishlatildi</span>
+          </div>
+
+          <div class="bg-neo-bg neo-border-2 p-3 neo-shadow-sm flex items-center justify-between">
+            <div>
+              <p class="font-mono text-xs font-bold text-neutral-600">O'Z HISOBIDAN (UNPAID)</p>
+              <h4 class="font-black text-xl">0 kun</h4>
+            </div>
+            <span class="bg-neo-yellow neo-border-2 font-mono font-black text-xs px-2 py-1">Cheksiz limit</span>
+          </div>
+
+          <button onclick="openModal('new-leave-modal')" class="w-full neo-click bg-black text-white font-black uppercase text-xs py-3 neo-border neo-shadow-sm">
+            + Yangi Ta'til So'rovi Berish
+          </button>
+        </div>
+
+        <!-- Pending Leave Approvals Table -->
+        <div class="lg:col-span-2 bg-white neo-border neo-shadow p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between border-b-[3px] border-black pb-2 mb-4">
+              <h3 class="font-black text-lg uppercase tracking-tight">KUTILYOTGAN TA'TIL ARIZALARI</h3>
+              <span id="pending-leave-badge" class="bg-neo-orange font-mono text-xs font-black px-2 py-0.5 neo-border-2">3 TA SO'ROV</span>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left font-sans text-xs">
+                <thead>
+                  <tr class="border-b-[3px] border-black bg-neo-yellow font-black uppercase font-mono">
+                    <th class="p-3">Xodim</th>
+                    <th class="p-3">Turi</th>
+                    <th class="p-3">Muddat</th>
+                    <th class="p-3">Sabab</th>
+                    <th class="p-3 text-center">Qaror</th>
+                  </tr>
+                </thead>
+                <tbody id="leave-requests-tbody" class="divide-y-2 divide-black font-semibold">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="mt-4 p-3 bg-neo-bg neo-border-2 text-xs font-mono font-bold flex items-center justify-between">
+            <span>ℹ️ Tasdiqlangan ta'tillar darhol jamoa taqvimi bilan sinxronlanadi.</span>
+            <span class="text-neutral-500">Auto-Audit: On</span>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- MODULE 5: PAYROLL & BONUSES (MAOSH) -->
+    <!-- ========================================== -->
+    <section id="tab-payroll" class="tab-content hidden space-y-6">
+      
+      <!-- Payroll Top Overview -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="bg-neo-lime neo-border neo-shadow p-5">
+          <p class="font-mono text-xs font-black uppercase">JAMI ASOSIY MAOSH BAZASI</p>
+          <h3 class="font-black text-3xl font-mono mt-1" id="payroll-base-sum">$14,500</h3>
+          <p class="text-xs font-bold mt-2">Barcha rasmiy mehnat shartnomalari bo'yicha</p>
+        </div>
+
+        <div class="bg-neo-yellow neo-border neo-shadow p-5">
+          <p class="font-mono text-xs font-black uppercase">HISOBLANGAN KPI BONUS FOND</p>
+          <h3 class="font-black text-3xl font-mono mt-1" id="payroll-bonus-sum">$2,200</h3>
+          <p class="text-xs font-bold mt-2">Kompaniya maqsadlariga asosan hisoblangan</p>
+        </div>
+
+        <div class="bg-neo-cyan neo-border neo-shadow p-5">
+          <p class="font-mono text-xs font-black uppercase">YAKUNIY TO'LOV (NET PAYROLL)</p>
+          <h3 class="font-black text-3xl font-mono mt-1" id="payroll-total-sum">$16,700</h3>
+          <p class="text-xs font-bold mt-2">Soliqlar va chegirmalar oldidan</p>
+        </div>
+      </div>
+
+      <!-- Payroll Calculation Table & Simulator -->
+      <div class="bg-white neo-border neo-shadow p-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b-[3px] border-black pb-4 mb-4 gap-3">
+          <div>
+            <h3 class="font-black text-xl uppercase tracking-tight">OYLIK ISH HAQI VA BONUS HISOBLASH REYESTRI</h3>
+            <p class="font-mono text-xs font-bold text-neutral-600">Har bir xodimning bazaviy maoshi va individual KPI bonusi dinamik hisoblanadi.</p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="exportPayrollCSV()" class="neo-click bg-black text-white px-4 py-2 font-black text-xs uppercase neo-shadow-sm flex items-center gap-1.5 font-mono">
+              <span>📥</span> CSV EKSPORT
+            </button>
+            <button onclick="generateReceiptModal()" class="neo-click bg-neo-pink text-white px-4 py-2 font-black text-xs uppercase neo-border-2 neo-shadow-sm font-mono">
+              <span>🧾</span> KVITANSIYA
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left font-sans text-xs">
+            <thead>
+              <tr class="border-b-[3px] border-black bg-neo-bg font-black uppercase font-mono">
+                <th class="p-3">Xodim</th>
+                <th class="p-3">Lavozim</th>
+                <th class="p-3">Baza ($)</th>
+                <th class="p-3">KPI Ko'rsatkich</th>
+                <th class="p-3">Bonus ($)</th>
+                <th class="p-3">Daromad Solig'i (12%)</th>
+                <th class="p-3 font-mono">Yakuniy Sof Summa</th>
+                <th class="p-3 text-center">Amal</th>
+              </tr>
+            </thead>
+            <tbody id="payroll-tbody" class="divide-y-2 divide-black font-semibold">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <div id="profile-drawer-backdrop" onclick="closeDrawer()" class="fixed inset-0 bg-black/60 z-40 hidden transition-opacity"></div>
+  <aside id="profile-drawer" class="fixed top-0 right-0 w-full max-w-md h-full bg-[#FFFDF5] border-l-[4px] border-black z-50 transform translate-x-full transition-transform duration-200 overflow-y-auto p-6 flex flex-col justify-between">
+    <div>
+      <div class="flex justify-between items-center border-b-[3px] border-black pb-4 mb-4">
+        <span class="bg-black text-neo-lime font-mono text-xs font-black px-2 py-1 uppercase">XODIM PROFILI // ID: <span id="drawer-id">#101</span></span>
+        <button onclick="closeDrawer()" class="neo-click bg-neo-pink text-white w-8 h-8 font-black neo-border-2 flex items-center justify-center">✕</button>
+      </div>
+
+      <div class="text-center bg-white neo-border neo-shadow-sm p-4 mb-5">
+        <div id="drawer-avatar" class="w-20 h-20 mx-auto bg-neo-yellow neo-border-2 font-black text-3xl flex items-center justify-center uppercase mb-2">
+          AR
+        </div>
+        <h3 id="drawer-name" class="font-black text-xl uppercase">Aziz Rahimov</h3>
+        <p id="drawer-role" class="font-mono text-xs font-bold text-neutral-600">Lead Frontend Engineer // IT</p>
+        <div class="mt-2 flex justify-center gap-2">
+          <span id="drawer-status-pill" class="bg-neo-lime neo-border-2 text-[10px] font-mono font-black px-2 py-0.5">FAOL</span>
+          <span id="drawer-location" class="bg-white neo-border-2 text-[10px] font-mono font-bold px-2 py-0.5">Toshkent Ofisi</span>
+        </div>
+      </div>
+
+      <!-- Metric Specs in Drawer -->
+      <div class="space-y-3 font-mono text-xs">
+        <div class="bg-white neo-border-2 p-3 flex justify-between items-center">
+          <span class="font-bold text-neutral-600">OYLIK BAZAVIY MAOSH:</span>
+          <span id="drawer-salary" class="font-black text-sm">$2,200</span>
+        </div>
+        <div class="bg-white neo-border-2 p-3 flex justify-between items-center">
+          <span class="font-bold text-neutral-600">SAMARADORLIK (KPI):</span>
+          <span id="drawer-kpi" class="font-black text-sm text-emerald-700">96%</span>
+        </div>
+        <div class="bg-white neo-border-2 p-3 flex justify-between items-center">
+          <span class="font-bold text-neutral-600">SHARTNOMA TUGASHI:</span>
+          <span id="drawer-contract" class="font-bold">2027-12-31</span>
+        </div>
+        <div class="bg-white neo-border-2 p-3 flex justify-between items-center">
+          <span class="font-bold text-neutral-600">ALOQA TELEFON:</span>
+          <span id="drawer-phone" class="font-bold">+998 (90) 123-45-67</span>
+        </div>
+      </div>
+
+      <!-- Competency tags -->
+      <div class="mt-5">
+        <p class="font-mono text-xs font-black uppercase mb-2">ASOSIY KO'NIKMALAR:</p>
+        <div id="drawer-skills" class="flex flex-wrap gap-1.5">
+          <!-- Skills pills injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 pt-4 border-t-[3px] border-black flex gap-2">
+      <button onclick="editCurrentEmployeeSalary()" class="flex-1 neo-click bg-neo-yellow text-black font-black uppercase text-xs py-2.5 neo-border-2 neo-shadow-sm">Maoshni Oshirish</button>
+      <button onclick="quickActionToast('Profil hisoboti yuklab olindi!')" class="flex-1 neo-click bg-black text-white font-black uppercase text-xs py-2.5 neo-shadow-sm">PDF Pasport</button>
+    </div>
+  </aside>
+
+  <div id="new-emp-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[#FFFDF5] neo-border neo-shadow-lg max-w-lg w-full p-6 relative max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b-[3px] border-black pb-3 mb-4">
+        <h3 class="font-black text-lg uppercase tracking-tight">YANGI XODIM RO'YXATGA OLISH</h3>
+        <button onclick="closeModal('new-emp-modal')" class="neo-click bg-neo-pink text-white w-8 h-8 font-black neo-border-2">✕</button>
+      </div>
+
+      <form id="new-employee-form" onsubmit="handleCreateEmployee(event)" class="space-y-4 font-sans text-xs">
+        <div>
+          <label class="block font-black uppercase font-mono mb-1">To'liq Ism Familiya *</label>
+          <input type="text" id="inp-emp-name" required placeholder="Masalan: Dilnoza Karimova" class="w-full bg-white neo-border-2 p-2.5 font-bold outline-none">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-black uppercase font-mono mb-1">Bo'lim *</label>
+            <select id="inp-emp-dept" class="w-full bg-white neo-border-2 p-2.5 font-bold outline-none">
+              <option value="IT">IT & Engineering</option>
+              <option value="Dizayn">Product & Dizayn</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Moliya">Moliya & HR</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-black uppercase font-mono mb-1">Lavozim *</label>
+            <input type="text" id="inp-emp-role" required placeholder="Masalan: Senior Backend Dev" class="w-full bg-white neo-border-2 p-2.5 font-bold outline-none">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-black uppercase font-mono mb-1">Oylik Maosh ($) *</label>
+            <input type="number" id="inp-emp-salary" min="400" max="25000" step="50" required placeholder="1800" class="w-full bg-white neo-border-2 p-2.5 font-bold outline-none font-mono">
+          </div>
+          <div>
+            <label class="block font-black uppercase font-mono mb-1">Dastlabki Holat</label>
+            <select id="inp-emp-status" class="w-full bg-white neo-border-2 p-2.5 font-bold outline-none">
+              <option value="Faol">Faol (Active)</option>
+              <option value="Sinovda">Sinov muddatida</option>
+              <option value="Masofaviy">Masofaviy (Remote)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-black uppercase font-mono mb-1">Asosiy Skill / Texnologiyalar (vergul bilan)</label>
+          <input type="text" id="inp-emp-skills" placeholder="React, Node.js, Docker, PostgreSQL" class="w-full bg-white neo-border-2 p-2.5 font-bold outline-none font-mono">
+        </div>
+
+        <div class="pt-3 border-t-[2px] border-black flex gap-3">
+          <button type="submit" class="flex-1 neo-click bg-neo-lime text-black font-black uppercase py-3 neo-border-2 neo-shadow-sm text-sm">Xodimni Saqlash ✅</button>
+          <button type="button" onclick="closeModal('new-emp-modal')" class="neo-click bg-white text-black font-black uppercase py-3 px-4 neo-border-2 text-sm">Bekor</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="new-candidate-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[#FFFDF5] neo-border neo-shadow-lg max-w-md w-full p-6 relative">
+      <div class="flex justify-between items-center border-b-[3px] border-black pb-3 mb-4">
+        <h3 class="font-black text-lg uppercase tracking-tight">YANGI NOMZOD QO'SHISH</h3>
+        <button onclick="closeModal('new-candidate-modal')" class="neo-click bg-neo-pink text-white w-8 h-8 font-black neo-border-2">✕</button>
+      </div>
+
+      <form id="new-candidate-form" onsubmit="handleCreateCandidate(event)" class="space-y-4 font-sans text-xs">
+        <div>
+          <label class="block font-black uppercase font-mono mb-1">Nomzod Ismi *</label>
+          <input type="text" id="inp-cand-name" required placeholder="Masalan: Sardor Rustamov" class="w-full bg-white neo-border-2 p-2.5 font-bold outline-none">
+        </div>
+
+        <div>
+          <label class="block font-black uppercase font-mono mb-1">Vakansiya / Lavozim *</label>
+          <input type="text" id="inp-cand-role" required placeholder="Masalan: DevOps Engineer" class="w-full bg-white neo-border-2 p-2.5 font-bold outline-none">
+        </div>
+
+        <div>
+          <label class="block font-black uppercase font-mono mb-1">Kutilayotgan Maosh ($)</label>
+          <input type="number" id="inp-cand-salary" placeholder="1800" class="w-full bg-white neo-border-2 p-2.5 font-bold outline-none font-mono">
+        </div>
+
+        <div>
+          <label class="block font-black uppercase font-mono mb-1">Tajriba / Qisqa Izoh</label>
+          <textarea id="inp-cand-notes" rows="2" placeholder="4 yil AWS va Kubernetes tajribasi, ingliz tili C1..." class="w-full bg-white neo-border-2 p-2.5 font-bold outline-none"></textarea>
+        </div>
+
+        <button type="submit" class="w-full neo-click bg-neo-cyan text-black font-black uppercase py-3 neo-border-2 neo-shadow-sm text-sm">Pipelinega Kiritish 🚀</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="new-leave-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[#FFFDF5] neo-border neo-shadow-lg max-w-md w-full p-6 relative">
+      <div class="flex justify-between items-center border-b-[3px] border-black pb-3 mb-4">
+        <h3 class="font-black text-lg uppercase tracking-tight">TA'TIL SO'ROVI BERISH</h3>
+        <button onclick="closeModal('new-leave-modal')" class="neo-click bg-neo-pink text-white w-8 h-8 font-black neo-border-2">✕</button>
+      </div>
+
+      <form id="new-leave-form" onsubmit="handleCreateLeave(event)" class="space-y-4 font-sans text-xs">
+        <div>
+          <label class="block font-black uppercase font-mono mb-1">Xodimni Tanlang *</label>
+          <select id="inp-leave-emp" class="w-full bg-white neo-border-2 p-2.5 font-bold outline-none">
+            <!-- Dynamically populated -->
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-black uppercase font-mono mb-1">Ta'til Turi *</label>
+          <select id="inp-leave-type" class="w-full bg-white neo-border-2 p-2.5 font-bold outline-none">
+            <option value="Mehnat ta'tili">Yillik Mehnat Ta'tili</option>
+            <option value="Kasallik varaqasi">Kasallik Varaqasi</option>
+            <option value="O'z hisobidan">O'z Hisobidan (Unpaid)</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-black uppercase font-mono mb-1">Boshlanish *</label>
+            <input type="date" id="inp-leave-start" required class="w-full bg-white neo-border-2 p-2 font-bold font-mono">
+          </div>
+          <div>
+            <label class="block font-black uppercase font-mono mb-1">Kunlar Soni *</label>
+            <input type="number" id="inp-leave-days" min="1" max="30" value="5" required class="w-full bg-white neo-border-2 p-2 font-bold font-mono">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-black uppercase font-mono mb-1">Sabab / Izoh</label>
+          <input type="text" id="inp-leave-reason" placeholder="Oilaviy safar va hordiq" class="w-full bg-white neo-border-2 p-2.5 font-bold outline-none">
+        </div>
+
+        <button type="submit" class="w-full neo-click bg-neo-yellow text-black font-black uppercase py-3 neo-border-2 neo-shadow-sm text-sm">Arizani Jo'natish ✉️</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="quick-announcement-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[#FFFDF5] neo-border neo-shadow-lg max-w-md w-full p-6 relative">
+      <div class="flex justify-between items-center border-b-[3px] border-black pb-3 mb-4">
+        <h3 class="font-black text-lg uppercase tracking-tight">JAMOA E'LONI CHIQARISH</h3>
+        <button onclick="closeModal('quick-announcement-modal')" class="neo-click bg-neo-pink text-white w-8 h-8 font-black neo-border-2">✕</button>
+      </div>
+
+      <div class="space-y-4 text-xs font-sans">
+        <div>
+          <label class="block font-black uppercase font-mono mb-1">Sarlavha</label>
+          <input type="text" id="inp-ann-title" value="⚡ Juma Kuni Jamoaviy Retrospektiva & Pitsa" class="w-full bg-white neo-border-2 p-2.5 font-bold outline-none">
+        </div>
+        <div>
+          <label class="block font-black uppercase font-mono mb-1">E'lon Matni</label>
+          <textarea id="inp-ann-body" rows="3" class="w-full bg-white neo-border-2 p-2.5 font-bold outline-none">Barcha bo'limlar soat 17:00 da asosiy zalda to'planadi. Q2 natijalarini nishonlaymiz!</textarea>
+        </div>
+        <button onclick="broadcastAnnouncement()" class="w-full neo-click bg-neo-pink text-white font-black uppercase py-3 neo-border-2 neo-shadow-sm text-sm">Barchaga E'lon Qilish 📢</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="receipt-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white neo-border neo-shadow-lg max-w-md w-full p-6 relative">
+      <div class="flex justify-between items-center border-b-[3px] border-black pb-3 mb-4">
+        <h3 class="font-black text-lg uppercase tracking-tight">KORPORATIV MAOSH KVITANSIYASI</h3>
+        <button onclick="closeModal('receipt-modal')" class="neo-click bg-black text-white w-8 h-8 font-black neo-border-2">✕</button>
+      </div>
+
+      <div id="receipt-content" class="bg-neo-bg neo-border-2 p-4 font-mono text-xs space-y-2">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div class="mt-4 flex gap-2">
+        <button onclick="printReceiptMock()" class="flex-1 neo-click bg-neo-lime text-black font-black uppercase py-2.5 neo-border-2 neo-shadow-sm text-xs">Chop Etish / Saqlash</button>
+        <button onclick="closeModal('receipt-modal')" class="neo-click bg-white text-black font-black uppercase py-2.5 px-4 neo-border-2 text-xs">Yopish</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="fixed bottom-6 right-6 bg-neo-lime text-black neo-border neo-shadow-lg px-4 py-3 font-mono font-black text-xs uppercase z-50 transform translate-y-32 transition-transform duration-200 flex items-center gap-2">
+    <span id="toast-icon">⚡</span>
+    <span id="toast-msg">Amal bajarildi!</span>
+  </div>
+
+  <footer class="mt-auto border-t-[3.5px] border-black bg-white p-4 font-mono text-xs">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 font-bold">
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 bg-neo-lime border border-black inline-block"></span>
+        <span>HR_NEXUS // OS VERSIYA 2.6 [DERSKIY EDITION]</span>
+      </div>
+      <div class="text-neutral-600">
+        MAHALLIY VAQT: SAMARQAND / UZB // ULTRA PERFORMANCE
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================ -->
+  <!-- ============================================================ -->
+  <script>
+    let audioEnabled = true;
+    let audioSynth = null;
+
+    // Sound FX utilizing Tone.js without external media assets
+    function playBeep(type = 'click') {
+      if (!audioEnabled) return;
+      try {
+        if (!audioSynth && window.Tone) {
+          audioSynth = new Tone.PolySynth(Tone.Synth, {
+            oscillator: { type: 'triangle' },
+            envelope: { attack: 0.005, decay: 0.1, sustain: 0, release: 0.1 }
+          }).toDestination();
+          Tone.start();
+        }
+        if (!audioSynth) return;
+
+        if (type === 'click') {
+          audioSynth.triggerAttackRelease('C5', '0.04');
+        } else if (type === 'success') {
+          audioSynth.triggerAttackRelease(['E5', 'G5', 'C6'], '0.1');
+        } else if (type === 'warning') {
+          audioSynth.triggerAttackRelease('F4', '0.12');
+        } else if (type === 'hire') {
+          audioSynth.triggerAttackRelease(['C5', 'F5', 'A5', 'C6'], '0.2');
+        }
+      } catch (e) {
+        // Fallback silently if audio context restricted
+      }
+    }
+
+    function toggleAudio() {
+      audioEnabled = !audioEnabled;
+      const label = document.getElementById('sound-label');
+      const icon = document.getElementById('sound-icon');
+      if (audioEnabled) {
+        label.innerText = 'AUDIO: ON';
+        icon.innerText = '🔊';
+        showToast('Tovush effektlari yoqildi 🔊');
+        playBeep('success');
+      } else {
+        label.innerText = 'AUDIO: OFF';
+        icon.innerText = '🔇';
+        showToast('Tovush effektlari o\'chirildi 🔇');
+      }
+    }
+
+    let employeesData = [
+      {
+        id: 101,
+        name: "Aziz Rahimov",
+        dept: "IT",
+        role: "Lead Frontend Architect",
+        salary: 2600,
+        kpi: 98,
+        status: "Faol",
+        phone: "+998 90 123-45-67",
+        skills: ["React", "TypeScript", "Next.js", "Tailwind", "Architecture"],
+        contractEnd: "2027-12-31",
+        avatarBg: "bg-neo-lime",
+        avatarTxt: "AR"
+      },
+      {
+        id: 102,
+        name: "Shaxzod Bekmirzayev",
+        dept: "IT",
+        role: "Senior Backend / Cloud",
+        salary: 2800,
+        kpi: 99,
+        status: "Faol",
+        phone: "+998 91 333-22-11",
+        skills: ["Go", "Kubernetes", "PostgreSQL", "Kafka", "AWS"],
+        contractEnd: "2027-08-15",
+        avatarBg: "bg-neo-pink",
+        avatarTxt: "SB"
+      },
+      {
+        id: 103,
+        name: "Kamola Umarova",
+        dept: "Dizayn",
+        role: "Lead Product Designer",
+        salary: 2100,
+        kpi: 95,
+        status: "Faol",
+        phone: "+998 93 456-78-90",
+        skills: ["Figma", "Design Systems", "Prototyping", "User Research"],
+        contractEnd: "2027-04-01",
+        avatarBg: "bg-neo-cyan",
+        avatarTxt: "KU"
+      },
+      {
+        id: 104,
+        name: "Bekzod Toirov",
+        dept: "Marketing",
+        role: "Performance & Growth Head",
+        salary: 1900,
+        kpi: 91,
+        status: "Masofaviy",
+        phone: "+998 94 999-88-77",
+        skills: ["Meta Ads", "Google Ads", "SEO", "Analytics", "Funnel"],
+        contractEnd: "2026-11-30",
+        avatarBg: "bg-neo-yellow",
+        avatarTxt: "BT"
+      },
+      {
+        id: 105,
+        name: "Nilufar Salimova",
+        dept: "Moliya",
+        role: "Bosh Hisobchi & Moliya",
+        salary: 2200,
+        kpi: 94,
+        status: "Faol",
+        phone: "+998 90 777-11-22",
+        skills: ["1C", "IFRS", "Audit", "Financial Modeling", "Payroll"],
+        contractEnd: "2028-01-10",
+        avatarBg: "bg-neo-purple",
+        avatarTxt: "NS"
+      },
+      {
+        id: 106,
+        name: "Jasur Nematov",
+        dept: "IT",
+        role: "QA Automation Engineer",
+        salary: 1600,
+        kpi: 88,
+        status: "Ta'tilda",
+        phone: "+998 99 222-33-44",
+        skills: ["Playwright", "Cypress", "Python", "CI/CD"],
+        contractEnd: "2026-12-31",
+        avatarBg: "bg-neo-orange",
+        avatarTxt: "JN"
+      },
+      {
+        id: 107,
+        name: "Ziyoda Rustamova",
+        dept: "Dizayn",
+        role: "3D & Motion Designer",
+        salary: 1800,
+        kpi: 92,
+        status: "Sinovda",
+        phone: "+998 97 101-20-30",
+        skills: ["Blender", "After Effects", "Spline", "Lottie"],
+        contractEnd: "2026-12-01",
+        avatarBg: "bg-neo-lime",
+        avatarTxt: "ZR"
+      },
+      {
+        id: 108,
+        name: "Farrux Qodirov",
+        dept: "Moliya",
+        role: "HR & Talent Specialist",
+        salary: 1500,
+        kpi: 90,
+        status: "Faol",
+        phone: "+998 93 111-44-55",
+        skills: ["Recruitment", "People Ops", "Culture", "Sourcing"],
+        contractEnd: "2027-06-30",
+        avatarBg: "bg-neo-pink",
+        avatarTxt: "FQ"
+      }
+    ];
+
+    let currentSelectedEmpId = 101;
+    let currentDeptFilter = 'ALL';
+
+    let candidatesData = [
+      { id: 201, name: "Doniyor Ergashev", role: "DevOps & SRE", salary: 2500, notes: "Terraform va Kubernetes bo'yicha 5 yillik portfolio", stage: "applied" },
+      { id: 202, name: "Laylo Karimova", role: "Copywriter & SMM", salary: 1100, notes: "O'zbek va rus tillarida kreativ portfolioga ega", stage: "applied" },
+      { id: 203, name: "Bobur Mirzayev", role: "Middle Flutter Dev", salary: 1800, notes: "Texnik sinov vazifasini 100% bajardi, kod toza", stage: "interview" },
+      { id: 204, name: "Malika Yusupova", role: "Product Manager", salary: 2400, notes: "Fintech tajribasi bor, jamoa boshqaruvi zo'r", stage: "interview" },
+      { id: 205, name: "Umid Vohidov", role: "Senior Data Analyst", salary: 2200, notes: "Oferta jo'natildi ($2,200), tasdiq kutilyapti", stage: "offer" },
+      { id: 206, name: "Sabina Aliyeva", role: "UI/UX Researcher", salary: 1600, notes: "Shartnoma imzolandi, dushanba kuni onboarding", stage: "hired" }
+    ];
+
+    let leaveRequests = [
+      { id: 301, empName: "Jasur Nematov", type: "Mehnat ta'tili", dates: "12-Okt — 18-Okt (7 kun)", reason: "Rejali yillik hordiq", status: "Kutilmoqda" },
+      { id: 302, empName: "Kamola Umarova", type: "Kasallik varaqasi", dates: "06-Okt — 08-Okt (3 kun)", reason: "Mavsumiy shamollash", status: "Kutilmoqda" },
+      { id: 303, empName: "Ziyoda Rustamova", type: "O'z hisobidan", dates: "15-Okt (1 kun)", reason: "Diplom himoyasi tadbiri", status: "Kutilmoqda" }
+    ];
+
+    let isPunchedIn = false;
+    let punchStartTime = null;
+
+    function switchTab(targetTabId) {
+      playBeep('click');
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.add('hidden');
+      });
+      document.getElementById(targetTabId).classList.remove('hidden');
+
+      // Update Tab Styles
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-neo-lime', 'text-black');
+        btn.classList.add('bg-white', 'text-black');
+      });
+
+      const activeNavBtn = document.getElementById('nav-' + targetTabId);
+      if (activeNavBtn) {
+        activeNavBtn.classList.remove('bg-white');
+        activeNavBtn.classList.add('bg-neo-lime');
+      }
+
+      // Refresh corresponding tab views
+      if (targetTabId === 'tab-employees') renderEmployees();
+      if (targetTabId === 'tab-kanban') renderKanban();
+      if (targetTabId === 'tab-attendance') renderLeavesTable();
+      if (targetTabId === 'tab-payroll') renderPayroll();
+      if (targetTabId === 'tab-dashboard') updateDashboardMetrics();
+    }
+
+    function startClock() {
+      function update() {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('uz-UZ', { hour12: false });
+        const timeElem = document.getElementById('live-time-display');
+        if (timeElem) timeElem.innerText = timeStr;
+      }
+      update();
+      setInterval(update, 1000);
+    }
+
+    function updateDashboardMetrics() {
+      const totalHeadcount = employeesData.length;
+      const totalBase = employeesData.reduce((acc, curr) => acc + curr.salary, 0);
+      const totalBonus = employeesData.reduce((acc, curr) => acc + Math.round((curr.salary * (curr.kpi / 100) * 0.15)), 0);
+      const totalPayroll = totalBase + totalBonus;
+      const avgKpi = (employeesData.reduce((acc, curr) => acc + curr.kpi, 0) / totalHeadcount).toFixed(1);
+      
+      const onVacation = employeesData.filter(e => e.status === "Ta'tilda").length;
+      const remoteCount = employeesData.filter(e => e.status === "Masofaviy").length;
+
+      document.getElementById('metric-headcount').innerText = totalHeadcount;
+      document.getElementById('metric-payroll').innerText = '$' + totalPayroll.toLocaleString();
+      document.getElementById('metric-kpi').innerText = avgKpi + '%';
+      document.getElementById('metric-vacation').innerText = `${onVacation} / ${remoteCount}`;
+      document.getElementById('tab-emp-count').innerText = totalHeadcount;
+    }
+
+    function filterDept(dept) {
+      playBeep('click');
+      currentDeptFilter = dept;
+      document.querySelectorAll('.dept-btn').forEach(btn => {
+        btn.classList.remove('bg-black', 'text-white');
+        btn.classList.add('bg-white', 'text-black');
+      });
+      event.target.classList.remove('bg-white', 'text-black');
+      event.target.classList.add('bg-black', 'text-white');
+      renderEmployees();
+    }
+
+    function handleSearchEmployees() {
+      renderEmployees();
+    }
+
+    function resetEmployeeFilters() {
+      document.getElementById('emp-search-input').value = '';
+      currentDeptFilter = 'ALL';
+      renderEmployees();
+    }
+
+    function renderEmployees() {
+      const container = document.getElementById('employees-cards-container');
+      const emptyState = document.getElementById('no-emp-state');
+      const searchQuery = (document.getElementById('emp-search-input')?.value || '').toLowerCase();
+
+      let filtered = employeesData.filter(emp => {
+        const matchesDept = currentDeptFilter === 'ALL' || emp.dept.toLowerCase() === currentDeptFilter.toLowerCase();
+        const matchesSearch = emp.name.toLowerCase().includes(searchQuery) ||
+                              emp.role.toLowerCase().includes(searchQuery) ||
+                              emp.dept.toLowerCase().includes(searchQuery) ||
+                              emp.skills.some(s => s.toLowerCase().includes(searchQuery));
+        return matchesDept && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      } else {
+        emptyState.classList.add('hidden');
+      }
+
+      container.innerHTML = filtered.map(emp => {
+        let statusBadgeClass = 'bg-neo-lime text-black';
+        if (emp.status === "Ta'tilda") statusBadgeClass = 'bg-neo-orange text-black';
+        if (emp.status === "Sinovda") statusBadgeClass = 'bg-neo-yellow text-black';
+        if (emp.status === "Masofaviy") statusBadgeClass = 'bg-neo-cyan text-black';
+
+        return `
+          <div class="bg-white neo-border neo-shadow p-4 flex flex-col justify-between hover:bg-neutral-50 transition-colors">
+            <div>
+              <div class="flex items-start justify-between gap-2 mb-3">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-10 h-10 ${emp.avatarBg} neo-border-2 font-black font-mono flex items-center justify-center text-sm shadow-[2px_2px_0px_#000]">
+                    ${emp.avatarTxt}
+                  </div>
+                  <div>
+                    <h4 class="font-black text-sm uppercase leading-tight">${emp.name}</h4>
+                    <span class="font-mono text-[10px] text-neutral-600 font-bold">${emp.dept} // #${emp.id}</span>
+                  </div>
+                </div>
+                <span class="${statusBadgeClass} font-mono text-[10px] font-black px-2 py-0.5 neo-border-2 uppercase">${emp.status}</span>
+              </div>
+
+              <div class="bg-neo-bg neo-border-2 p-2.5 my-2 space-y-1 font-mono text-[11px]">
+                <div class="flex justify-between">
+                  <span class="text-neutral-600 font-bold">LAVOZIM:</span>
+                  <span class="font-black truncate max-w-[150px]">${emp.role}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-neutral-600 font-bold">MAOSH:</span>
+                  <span class="font-black text-black">$${emp.salary.toLocaleString()}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-neutral-600 font-bold">KPI INDEX:</span>
+                  <span class="font-black text-emerald-800">${emp.kpi}%</span>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-1 mt-2">
+                ${emp.skills.slice(0, 3).map(sk => `<span class="bg-white neo-border-2 text-[9px] font-mono font-bold px-1.5 py-0.2">${sk}</span>`).join('')}
+                ${emp.skills.length > 3 ? `<span class="bg-neutral-100 text-[9px] font-mono font-bold px-1">+${emp.skills.length - 3}</span>` : ''}
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t-2 border-black flex gap-2">
+              <button onclick="openEmployeeDrawer(${emp.id})" class="flex-1 neo-click bg-neo-yellow text-black font-black uppercase text-xs py-1.5 neo-border-2 neo-shadow-sm">Profil</button>
+              <button onclick="deleteEmployee(${emp.id})" class="neo-click bg-neo-pink text-white font-black text-xs px-2.5 py-1.5 neo-border-2 neo-shadow-sm" title="Xodimni o'chirish">✕</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openEmployeeDrawer(empId) {
+      playBeep('click');
+      const emp = employeesData.find(e => e.id === empId);
+      if (!emp) return;
+
+      currentSelectedEmpId = emp.id;
+      document.getElementById('drawer-id').innerText = '#' + emp.id;
+      document.getElementById('drawer-name').innerText = emp.name;
+      document.getElementById('drawer-role').innerText = `${emp.role} // ${emp.dept}`;
+      document.getElementById('drawer-salary').innerText = '$' + emp.salary.toLocaleString();
+      document.getElementById('drawer-kpi').innerText = emp.kpi + '%';
+      document.getElementById('drawer-contract').innerText = emp.contractEnd;
+      document.getElementById('drawer-phone').innerText = emp.phone;
+      document.getElementById('drawer-avatar').innerText = emp.avatarTxt;
+      document.getElementById('drawer-avatar').className = `w-20 h-20 mx-auto ${emp.avatarBg} neo-border-2 font-black text-3xl flex items-center justify-center uppercase mb-2`;
+
+      const statusPill = document.getElementById('drawer-status-pill');
+      statusPill.innerText = emp.status.toUpperCase();
+
+      const skillsContainer = document.getElementById('drawer-skills');
+      skillsContainer.innerHTML = emp.skills.map(s => `
+        <span class="bg-neo-yellow neo-border-2 font-mono text-[10px] font-black px-2 py-0.5">${s}</span>
+      `).join('');
+
+      document.getElementById('profile-drawer-backdrop').classList.remove('hidden');
+      document.getElementById('profile-drawer').classList.remove('translate-x-full');
+    }
+
+    function closeDrawer() {
+      document.getElementById('profile-drawer-backdrop').classList.add('hidden');
+      document.getElementById('profile-drawer').classList.add('translate-x-full');
+    }
+
+    function editCurrentEmployeeSalary() {
+      const emp = employeesData.find(e => e.id === currentSelectedEmpId);
+      if (!emp) return;
+      const newSalary = prompt(`${emp.name} uchun yangi oylik maoshni kiriting ($):`, emp.salary);
+      if (newSalary && !isNaN(newSalary) && Number(newSalary) > 0) {
+        emp.salary = parseInt(newSalary);
+        document.getElementById('drawer-salary').innerText = '$' + emp.salary.toLocaleString();
+        renderEmployees();
+        updateDashboardMetrics();
+        showToast(`${emp.name} maoshi $${emp.salary} ga yangilandi! 💰`);
+        playBeep('success');
+      }
+    }
+
+    function deleteEmployee(empId) {
+      const emp = employeesData.find(e => e.id === empId);
+      if (!emp) return;
+      
+      // Neo-brutalist custom confirm alternative: instant action with undo toast
+      if (confirm(`${emp.name} xodimi tizimdan o'chirilsinmi?`)) {
+        employeesData = employeesData.filter(e => e.id !== empId);
+        renderEmployees();
+        updateDashboardMetrics();
+        showToast(`${emp.name} xodimlar safidan chiqarildi! 🗑️`);
+        playBeep('warning');
+      }
+    }
+
+    function handleCreateEmployee(e) {
+      e.preventDefault();
+      const name = document.getElementById('inp-emp-name').value.trim();
+      const dept = document.getElementById('inp-emp-dept').value;
+      const role = document.getElementById('inp-emp-role').value.trim();
+      const salary = parseInt(document.getElementById('inp-emp-salary').value) || 1200;
+      const status = document.getElementById('inp-emp-status').value;
+      const skillsRaw = document.getElementById('inp-emp-skills').value;
+
+      const skills = skillsRaw ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean) : ['Standard Pro'];
+      const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'HR';
+
+      const colors = ['bg-neo-lime', 'bg-neo-cyan', 'bg-neo-pink', 'bg-neo-yellow', 'bg-neo-orange'];
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+      const newId = Date.now() % 10000;
+
+      employeesData.unshift({
+        id: newId,
+        name,
+        dept,
+        role,
+        salary,
+        kpi: Math.floor(Math.random() * 10) + 90,
+        status,
+        phone: "+998 90 " + Math.floor(100 + Math.random() * 900) + "-" + Math.floor(10 + Math.random() * 90) + "-" + Math.floor(10 + Math.random() * 90),
+        skills,
+        contractEnd: "2027-12-31",
+        avatarBg: randomColor,
+        avatarTxt: initials
+      });
+
+      closeModal('new-emp-modal');
+      document.getElementById('new-employee-form').reset();
+      renderEmployees();
+      updateDashboardMetrics();
+      showToast(`Yangi xodim ${name} bazaga qo'shildi! 🚀`);
+      playBeep('success');
+      triggerConfetti();
+    }
+
+    function renderKanban() {
+      const stages = ['applied', 'interview', 'offer', 'hired'];
+      stages.forEach(st => {
+        const colContainer = document.getElementById(`kanban-${st}`);
+        const countBadge = document.getElementById(`col-count-${st}`);
+        const cards = candidatesData.filter(c => c.stage === st);
+
+        if (countBadge) countBadge.innerText = cards.length;
+
+        if (cards.length === 0) {
+          colContainer.innerHTML = `<div class="p-6 border-2 border-dashed border-neutral-400 text-center font-mono text-xs font-bold text-neutral-500">Nomzodlar yo'q</div>`;
+          return;
+        }
+
+        colContainer.innerHTML = cards.map(c => `
+          <div class="bg-white neo-border-2 p-3 neo-shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-start">
+                <h5 class="font-black text-sm uppercase leading-tight">${c.name}</h5>
+                <span class="font-mono text-[10px] font-black bg-neo-yellow px-1.5 py-0.5 neo-border-2">$${c.salary}</span>
+              </div>
+              <p class="font-mono text-[11px] font-bold text-neutral-700 mt-1">${c.role}</p>
+              <p class="text-xs text-neutral-600 mt-2 bg-neo-bg p-2 neo-border-2 font-mono">${c.notes}</p>
+            </div>
+
+            <div class="mt-3 pt-2 border-t-2 border-black flex justify-between items-center gap-1 font-mono text-[10px]">
+              ${st !== 'applied' ? `<button onclick="moveCandidate(${c.id}, 'prev')" class="neo-click bg-neutral-200 px-2 py-1 neo-border-2 font-black uppercase">← Orqaga</button>` : '<span></span>'}
+              ${st !== 'hired' ? `<button onclick="moveCandidate(${c.id}, 'next')" class="neo-click bg-neo-lime px-2 py-1 neo-border-2 font-black uppercase">Oldinga →</button>` : `<span class="bg-black text-neo-lime font-black px-2 py-1">ISHGA OLINDI 🏆</span>`}
+            </div>
+          </div>
+        `).join('');
+      });
+    }
+
+    function moveCandidate(candidateId, direction) {
+      playBeep('click');
+      const cand = candidatesData.find(c => c.id === candidateId);
+      if (!cand) return;
+
+      const stages = ['applied', 'interview', 'offer', 'hired'];
+      const currentIndex = stages.indexOf(cand.stage);
+      let targetIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
+
+      if (targetIndex >= 0 && targetIndex < stages.length) {
+        cand.stage = stages[targetIndex];
+        
+        if (cand.stage === 'hired') {
+          playBeep('hire');
+          triggerConfetti();
+          showToast(`${cand.name} rasman jamoaga qabul qilindi! 🎉`);
+        } else {
+          showToast(`${cand.name} bosqichi yangilandi: ${cand.stage.toUpperCase()}`);
+        }
+        renderKanban();
+      }
+    }
+
+    function handleCreateCandidate(e) {
+      e.preventDefault();
+      const name = document.getElementById('inp-cand-name').value.trim();
+      const role = document.getElementById('inp-cand-role').value.trim();
+      const salary = parseInt(document.getElementById('inp-cand-salary').value) || 1500;
+      const notes = document.getElementById('inp-cand-notes').value.trim() || 'Yangi nomzod ko\'rib chiqilmoqda';
+
+      candidatesData.unshift({
+        id: Date.now() % 10000,
+        name,
+        role,
+        salary,
+        notes,
+        stage: 'applied'
+      });
+
+      closeModal('new-candidate-modal');
+      document.getElementById('new-candidate-form').reset();
+      renderKanban();
+      showToast(`Nomzod ${name} arizasi kiritildi! 📄`);
+      playBeep('success');
+    }
+
+    function togglePunchClock() {
+      const punchBtn = document.getElementById('punch-btn');
+      isPunchedIn = !isPunchedIn;
+
+      if (isPunchedIn) {
+        punchStartTime = new Date();
+        punchBtn.innerText = 'CHIQISHNI BOSISH 🔴';
+        punchBtn.className = 'neo-click bg-red-500 text-white font-black uppercase text-sm px-5 py-3 neo-border-2 neo-shadow-sm';
+        showToast('Xayrli kun! Kirish vaqti qayd etildi (GPS OK) 🟢');
+        playBeep('success');
+      } else {
+        punchBtn.innerText = 'KIRISHNI BOSISH 🟢';
+        punchBtn.className = 'neo-click bg-neo-lime text-black font-black uppercase text-sm px-5 py-3 neo-border-2 neo-shadow-sm';
+        showToast('Ish yakuni qayd etildi! Bugungi hisobot saqlandi 🏁');
+        playBeep('click');
+      }
+    }
+
+    function renderLeavesTable() {
+      const tbody = document.getElementById('leave-requests-tbody');
+      const badge = document.getElementById('pending-leave-badge');
+
+      const pending = leaveRequests.filter(l => l.status === 'Kutilmoqda');
+      if (badge) badge.innerText = `${pending.length} TA SO'ROV`;
+
+      if (leaveRequests.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center font-mono text-neutral-500 font-bold">Kutilayotgan arizalar mavjud emas.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = leaveRequests.map(l => {
+        return `
+          <tr class="hover:bg-neutral-50">
+            <td class="p-3 font-bold">${l.empName}</td>
+            <td class="p-3 font-mono">${l.type}</td>
+            <td class="p-3 font-mono">${l.dates}</td>
+            <td class="p-3 text-neutral-700 font-mono text-[11px]">${l.reason}</td>
+            <td class="p-3 text-center">
+              ${l.status === 'Kutilmoqda' ? `
+                <div class="flex items-center justify-center gap-2">
+                  <button onclick="resolveLeave(${l.id}, 'approved')" class="neo-click bg-neo-lime font-black px-2.5 py-1 neo-border-2 text-[11px] uppercase">Ruxsat</button>
+                  <button onclick="resolveLeave(${l.id}, 'rejected')" class="neo-click bg-red-400 font-black px-2 py-1 neo-border-2 text-[11px] uppercase">Rad</button>
+                </div>
+              ` : `
+                <span class="font-mono text-[10px] font-black uppercase px-2 py-0.5 ${l.status === 'Tasdiqlandi' ? 'bg-neo-lime' : 'bg-red-400'} neo-border-2">${l.status}</span>
+              `}
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Populate employee select in leave modal
+      const leaveEmpSelect = document.getElementById('inp-leave-emp');
+      if (leaveEmpSelect) {
+        leaveEmpSelect.innerHTML = employeesData.map(e => `<option value="${e.name}">${e.name} (${e.dept})</option>`).join('');
+      }
+    }
+
+    function resolveLeave(leaveId, action) {
+      playBeep('click');
+      const leave = leaveRequests.find(l => l.id === leaveId);
+      if (!leave) return;
+
+      if (action === 'approved') {
+        leave.status = 'Tasdiqlandi';
+        showToast(`${leave.empName} ta'tili tasdiqlandi! 🌴`);
+        playBeep('success');
+      } else {
+        leave.status = 'Rad etildi';
+        showToast(`${leave.empName} ta'til so'rovi rad etildi! ❌`);
+        playBeep('warning');
+      }
+      renderLeavesTable();
+      updateDashboardMetrics();
+    }
+
+    function handleCreateLeave(e) {
+      e.preventDefault();
+      const empName = document.getElementById('inp-leave-emp').value;
+      const type = document.getElementById('inp-leave-type').value;
+      const start = document.getElementById('inp-leave-start').value || '2026-10-15';
+      const days = document.getElementById('inp-leave-days').value || 5;
+      const reason = document.getElementById('inp-leave-reason').value || "O'z shaxsiy sabablariga ko'ra";
+
+      leaveRequests.unshift({
+        id: Date.now() % 10000,
+        empName,
+        type,
+        dates: `${start} (${days} kun)`,
+        reason,
+        status: "Kutilmoqda"
+      });
+
+      closeModal('new-leave-modal');
+      document.getElementById('new-leave-form').reset();
+      renderLeavesTable();
+      showToast('Ta\'til so\'rovi tizimga yuborildi! ✉️');
+      playBeep('success');
+    }
+
+    function renderPayroll() {
+      const tbody = document.getElementById('payroll-tbody');
+      let totalBase = 0;
+      let totalBonus = 0;
+      let totalNet = 0;
+
+      tbody.innerHTML = employeesData.map(emp => {
+        const base = emp.salary;
+        // Derskiy KPI bonus formula: (KPI / 100) * 15% of base
+        const bonus = Math.round(base * (emp.kpi / 100) * 0.15);
+        const gross = base + bonus;
+        const tax12 = Math.round(gross * 0.12);
+        const net = gross - tax12;
+
+        totalBase += base;
+        totalBonus += bonus;
+        totalNet += gross;
+
+        return `
+          <tr class="hover:bg-neutral-50">
+            <td class="p-3 font-bold font-sans">${emp.name}</td>
+            <td class="p-3 font-mono text-[11px] text-neutral-600">${emp.role}</td>
+            <td class="p-3 font-mono font-bold">$${base.toLocaleString()}</td>
+            <td class="p-3 font-mono">
+              <span class="bg-neo-lime font-black px-1.5 py-0.5 neo-border-2 text-[11px]">${emp.kpi}%</span>
+            </td>
+            <td class="p-3 font-mono font-black text-emerald-800">+$${bonus}</td>
+            <td class="p-3 font-mono text-red-600">-$${tax12}</td>
+            <td class="p-3 font-mono font-black text-sm text-black">$${net.toLocaleString()}</td>
+            <td class="p-3 text-center">
+              <button onclick="viewEmpReceipt(${emp.id})" class="neo-click bg-neo-yellow font-black px-2 py-1 neo-border-2 text-[10px] uppercase">Kvitansiya</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      document.getElementById('payroll-base-sum').innerText = '$' + totalBase.toLocaleString();
+      document.getElementById('payroll-bonus-sum').innerText = '$' + totalBonus.toLocaleString();
+      document.getElementById('payroll-total-sum').innerText = '$' + totalNet.toLocaleString();
+    }
+
+    function viewEmpReceipt(empId) {
+      playBeep('click');
+      const emp = employeesData.find(e => e.id === empId);
+      if (!emp) return;
+
+      const base = emp.salary;
+      const bonus = Math.round(base * (emp.kpi / 100) * 0.15);
+      const gross = base + bonus;
+      const tax = Math.round(gross * 0.12);
+      const net = gross - tax;
+
+      const receiptBox = document.getElementById('receipt-content');
+      receiptBox.innerHTML = `
+        <div class="border-b-2 border-black pb-2 text-center">
+          <p class="font-black text-sm uppercase">HR_NEXUS // ISH HAQI BILDIRISHNOMASI</p>
+          <p class="text-[10px] text-neutral-600">DAVR: OKTYABR 2026 // SERIYA: #HR-${emp.id}</p>
+        </div>
+        <div class="space-y-1.5 pt-2">
+          <div class="flex justify-between"><span>Xodim:</span> <strong class="uppercase">${emp.name}</strong></div>
+          <div class="flex justify-between"><span>Bo'lim:</span> <span>${emp.dept} (${emp.role})</span></div>
+          <div class="flex justify-between"><span>Asosiy stavka:</span> <span>$${base.toLocaleString()}</span></div>
+          <div class="flex justify-between"><span>KPI Samaradorlik:</span> <span>${emp.kpi}%</span></div>
+          <div class="flex justify-between"><span>Dinamik Bonus:</span> <span>+$${bonus.toLocaleString()}</span></div>
+          <div class="flex justify-between border-t border-black pt-1"><span>Jami hisoblangan:</span> <strong>$${gross.toLocaleString()}</strong></div>
+          <div class="flex justify-between text-red-700"><span>Daromad solig'i (12%):</span> <span>-$${tax.toLocaleString()}</span></div>
+          <div class="flex justify-between border-t-2 border-black pt-2 text-sm font-black bg-neo-yellow p-1.5 neo-border-2">
+            <span>SOF TO'LANADIGAN SUMMA:</span>
+            <span>$${net.toLocaleString()}</span>
+          </div>
+        </div>
+        <div class="pt-2 text-[10px] text-neutral-600 text-center font-mono">
+          Ushbu hujjat elektron imzolangan va bank to'lov tizimiga yuborilgan.
+        </div>
+      `;
+
+      openModal('receipt-modal');
+    }
+
+    function generateReceiptModal() {
+      if (employeesData.length > 0) {
+        viewEmpReceipt(employeesData[0].id);
+      }
+    }
+
+    function printReceiptMock() {
+      playBeep('success');
+      showToast('Kvitansiya PDF ko\'rinishida tayyorlandi! 🖨️');
+      closeModal('receipt-modal');
+    }
+
+    function exportPayrollCSV() {
+      playBeep('click');
+      let csv = "ID,Xodim Ismi,Bolim,Lavozim,Asosiy Maosh,KPI,Bonus,Net Maosh\n";
+      employeesData.forEach(e => {
+        const bonus = Math.round(e.salary * (e.kpi / 100) * 0.15);
+        const gross = e.salary + bonus;
+        const net = gross - Math.round(gross * 0.12);
+        csv += `${e.id},"${e.name}","${e.dept}","${e.role}",${e.salary},${e.kpi}%,${bonus},${net}\n`;
+      });
+
+      downloadFile(csv, `HR_NEXUS_Payroll_${new Date().toISOString().slice(0,10)}.csv`, 'text/csv');
+      showToast('Payroll CSV yuklab olindi! 📥');
+    }
+
+    function exportQuickEmployeeList() {
+      playBeep('click');
+      let csv = "ID,Ism,Bolim,Lavozim,Telefon,Status,Maosh\n";
+      employeesData.forEach(e => {
+        csv += `${e.id},"${e.name}","${e.dept}","${e.role}","${e.phone}","${e.status}",$${e.salary}\n`;
+      });
+      downloadFile(csv, `HR_NEXUS_Employees_${new Date().toISOString().slice(0,10)}.csv`, 'text/csv');
+      showToast('Barcha xodimlar CSV formatida saqlandi! 📄');
+    }
+
+    function downloadFile(content, fileName, mimeType) {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function openModal(modalId) {
+      playBeep('click');
+      document.getElementById(modalId).classList.remove('hidden');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.add('hidden');
+    }
+
+    function showToast(message, icon = '⚡') {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      const toastIcon = document.getElementById('toast-icon');
+
+      toastMsg.innerText = message;
+      toastIcon.innerText = icon;
+      toast.classList.remove('translate-y-32');
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-32');
+      }, 3500);
+    }
+
+    function quickActionToast(msg) {
+      playBeep('success');
+      showToast(msg);
+      triggerConfetti();
+    }
+
+    function broadcastAnnouncement() {
+      const title = document.getElementById('inp-ann-title').value;
+      closeModal('quick-announcement-modal');
+      showToast(`E'lon hammaga jo'natildi: ${title} 📢`);
+      playBeep('success');
+      triggerConfetti();
+    }
+
+    function triggerConfetti() {
+      if (window.confetti) {
+        confetti({
+          particleCount: 50,
+          spread: 60,
+          origin: { y: 0.8 },
+          colors: ['#CCFF00', '#FFE500', '#FF2E93', '#00F0FF', '#000000']
+        });
+      }
+    }
+
+    window.onload = function() {
+      startClock();
+      renderEmployees();
+      renderKanban();
+      renderLeavesTable();
+      renderPayroll();
+      updateDashboardMetrics();
+
+      // Keyboard escape listener to close modals/drawers
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeDrawer();
+          ['new-emp-modal', 'new-candidate-modal', 'new-leave-modal', 'quick-announcement-modal', 'receipt-modal'].forEach(closeModal);
+        }
+      });
+    };
+  </script>
+</body>
+</html>
